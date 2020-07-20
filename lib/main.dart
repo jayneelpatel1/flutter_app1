@@ -3,8 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/app_screens/first_screen.dart';
-
+import 'package:flutter/rendering.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -17,10 +16,44 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Welcome to Flutter'),
         ),
-        body: Center(
-          child: firestScreen(),
+        body: getlist(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            debugPrint("floating button click");
+          },
+          child: Icon(Icons.add),
+          tooltip: 'Add users',
         ),
       ),
     );
+  }
+
+  void shownackbar(BuildContext context,String item){
+    var snack=SnackBar(
+      content: Text("You just tap $item")
+    );
+    Scaffold.of(context).showSnackBar(snack);
+  }
+
+
+  List<String> getListIteam() {
+    var item = List<String>.generate(10, (counter) => "User $counter");
+    return item;
+  }
+
+  Widget getlist() {
+    var listitem = getListIteam();
+    var listview = ListView.builder(
+        itemCount: listitem.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(Icons.person),
+            title: Text(listitem[index]),
+            onTap: () {
+              shownackbar(context,listitem[index]);
+            },
+          );
+        });
+    return listview;
   }
 }
